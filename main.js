@@ -2,7 +2,7 @@ var express = require('express'),
     stylus = require('stylus'),
     nib = require('nib'),
     getLadderFor = require('./server/ladder.js').getFor,
-    port = 8080;
+    port = 8484;
 
 var app = express();
 
