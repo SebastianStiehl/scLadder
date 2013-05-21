@@ -1,0 +1,26 @@
+extend layout
+
+block content
+
+    .left
+        h2 EU Ladder
+            button#refreshEU(data-action-url='ladder/eu') update
+        table#topEU
+
+    .left
+        h2 US Ladder
+            button#refreshUS(data-action-url='ladder/us') update
+        table#topUS
+
+    .left
+        h2 KR Ladder
+            button#refreshKR(data-action-url='ladder/kr') update
+        table#topKR
+
+    script#listTemplate(type='text/template')
+        {{#users}}
+        tr(class='{{className}}')
+            td {{index}}
+            td {{name}}
+            td {{points}}
+        {{/users}}
