@@ -21,6 +21,7 @@ block content
         {{#users}}
         tr(class='{{className}}')
             td {{index}}
-            td {{name}}
+            td
+                a(href='{{profileUrl}}') {{name}}
             td {{points}}
         {{/users}}

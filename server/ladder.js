@@ -1,4 +1,5 @@
 var crawler = require("./crawl.js"),
+    urlTool = require("url"),
     ladderCache = [],
     urls = {
         us: 'http://us.battle.net/sc2/en/ladder/grandmaster/heart-of-the-swarm',
@@ -22,14 +23,20 @@ function response(usersAsJson, res) {
     res.end(usersAsJson);
 }
 
+function addDomainBeforeProfileUrl(users, url) {
+    users.forEach(function (el) {
+        var urlParts = urlTool.parse(url);
+        el.profileUrl = urlParts.protocol + "//" + urlParts.host + el.profileUrl;
+    });
+}
 function crawlUrl(url, res) {
     crawler.start(url, function (html) {
         var usersAsJson,
+            users = crawler.extractFrom(html);
 
-        users = crawler.extractFrom(html);
+        addDomainBeforeProfileUrl(users, url);
         usersAsJson = JSON.stringify({users: users, date: formatDate()});
         ladderCache[url] = usersAsJson;
-
         response(usersAsJson, res);
     });
 }
