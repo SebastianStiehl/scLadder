@@ -2,26 +2,50 @@ extend layout
 
 block content
 
-    .left
+    .left.ladderContainer
         h2 EU Ladder
             button#refreshEU(data-action-url='ladder/eu') update
-        table#topEU
+        div.tableContainer
 
-    .left
+    .left.ladderContainer
         h2 US Ladder
             button#refreshUS(data-action-url='ladder/us') update
-        table#topUS
+        div.tableContainer
 
-    .left
+    .left.ladderContainer
         h2 KR Ladder
             button#refreshKR(data-action-url='ladder/kr') update
-        table#topKR
+        div.tableContainer
 
     script#listTemplate(type='text/template')
-        {{#users}}
-        tr(class='{{className}}')
-            td {{index}}
-            td
-                a(href='{{profileUrl}}') {{name}}
-            td {{points}}
-        {{/users}}
+        div {{date}}
+        table
+            thead
+                tr
+                    td #
+                    td Name
+                    td points
+                    td win/games
+                    td ratio
+
+            tbody
+                {{#users}}
+                tr(class='{{className}}')
+                    td {{rank}}
+                    td
+                        a(href='{{profileUrl}}') {{name}}
+                    td {{points}}
+                    td {{wins}}
+                    td {{ratio}}%
+                {{/users}}
+                tr
+                    td ...
+                {{#restUser}}
+                tr(class='{{className}}')
+                    td {{rank}}
+                    td
+                        a(href='{{profileUrl}}') {{name}}
+                    td {{points}}
+                    td {{wins}}
+                    td {{ratio}}%
+                {{/restUser}}

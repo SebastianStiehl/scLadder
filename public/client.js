@@ -7,12 +7,6 @@ $(function () {
         user.name = user.name.replace(/\[.+\]/, "");
     }
 
-    function addZeroBeforeIndex(user) {
-        if (user.index < 10) {
-            user.index = "0" + user.index.toString();
-        }
-    }
-
     function addHighlightClass(user, index, restUser) {
         if (($.inArray(user.name.toLocaleLowerCase(), highlightNames) !== -1)) {
             user.className = "high";
@@ -26,7 +20,7 @@ $(function () {
         var restUser = [];
 
         $topUsersList.empty();
-        $topUsersList.append("<tr><td colspan='3'>loading...</td></tr>");
+        $topUsersList.append("<div>loading...</div>");
 
 
         $.getJSON(serviceUrl, function (data) {
@@ -34,28 +28,24 @@ $(function () {
 
             $.each(data.users, function (index, user) {
                 removeClanName(user);
-                addZeroBeforeIndex(user);
                 addHighlightClass(user, index, restUser);
             });
 
+            templateOutput = Mustache.render(template, {
+                users: data.users.splice(0, maxIndex),
+                restUser: restUser,
+                date: data.date
+            });
+
             $topUsersList.empty();
-            $topUsersList.append("<tr><td colspan='3'>" + data.date + "</td></tr>");
-            $topUsersList.append("<tr><td colspan='3'>&nbsp;</td></tr>");
-
-
-            templateOutput = Mustache.render(template, {users: data.users.splice(0, maxIndex)});
-            $topUsersList.append(templateOutput);
-
-            templateOutput = Mustache.render(template, {users: restUser});
-            $topUsersList.append("<tr><td colspan='3'>...</td></tr>");
             $topUsersList.append(templateOutput);
         });
     }
 
     function load() {
-        $("button").each(function (index, button) {
-            var $button = $(button),
-                $list = $button.parents("div:first").find("table"),
+        $(".ladderContainer").each(function (index, ladderContainer) {
+            var $button = $(ladderContainer).find("button"),
+                $list = $(ladderContainer).find(".tableContainer"),
                 actionUrl = $button.attr("data-action-url");
 
             getData($list, actionUrl);
